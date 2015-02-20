@@ -1,0 +1,13 @@
+{
+    "name": "depotwarehouse/jeopardy-parser",
+    "authors": [
+        {
+            "name": "Troy Pavlek",
+            "email": "ebonwumon@depotwarehouse.net"
+        }
+    ],
+    "require": {
+        "fabpot/goutte": "~2.0",
+        "symfony/var-dumper": "~2.6"
+    }
+}
