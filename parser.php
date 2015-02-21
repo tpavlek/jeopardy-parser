@@ -3,31 +3,27 @@
 use Symfony\Component\DomCrawler\Crawler;
 
 require_once 'vendor/autoload.php';
+require_once 'config/config.php';
 
 $client = new \Goutte\Client();
 
-$crawler = $client->request('GET', 'http://www.j-archive.com/showgame.php?game_id=4740');
+$crawler = $client->request('GET', $config['url']);
 
 $rounds = $crawler->filter('table.round');
 
 $categories = processRound($rounds->first());
 
 unset($categories[5]);
-$game = [ ];
-$game['contestants'] = [
-    [
-        "name" => "Troy",
-        "score" => 0
-    ],
-    [
-        "name" => "Phil",
-        "score" => 0
-    ],
-    [
-        "name" => "Bob",
-        "score" => 0
-    ]
-];
+$game = [];
+$game['contestants'] = [ ];
+
+foreach ($config['players'] as $player) {
+    $game['contestants'][] = [
+        'name' => $player,
+        'score' => 0
+    ];
+}
+
 $game['categories'] = $categories;
 
 file_put_contents("questions.json", json_encode($game));
@@ -48,11 +44,11 @@ function processRound(\Symfony\Component\DomCrawler\Crawler $round)
 
         $text = trim($clueElement->text());
         if ($text == null || $text == "") {
-            return [ 'clue' => $clue, 'answer' => $answer, 'value' => $value, 'daily_double' => $daily_double ];
+            return ['clue' => $clue, 'answer' => $answer, 'value' => $value, 'daily_double' => $daily_double];
         }
         $clue = $clueElement->filter('td.clue_text')->first()->text();
         $answerMouseover = $clueElement->filter('div')->getNode(0)->attributes->getNamedItem('onmouseover')->nodeValue;
-        $matches = [ ];
+        $matches = [];
         preg_match('{<em class="correct_response">(.*)</em>}', $answerMouseover, $matches);
 
         $answer = $matches[1];
@@ -64,10 +60,10 @@ function processRound(\Symfony\Component\DomCrawler\Crawler $round)
             $daily_double = true;
         }
 
-        return [ 'clue' => $clue, 'answer' => $answer, 'value' => $value, 'daily_double' => $daily_double ];
+        return ['clue' => $clue, 'answer' => $answer, 'value' => $value, 'daily_double' => $daily_double];
     });
 
-    $categories = [ ];
+    $categories = [];
     $catIndex = 0;
 
     foreach ($categoryNames as $categoryName) {
