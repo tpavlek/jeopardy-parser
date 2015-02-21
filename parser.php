@@ -29,13 +29,16 @@ $game['categories'] = $categories;
 file_put_contents("questions.json", json_encode($game));
 
 
-function processRound(\Symfony\Component\DomCrawler\Crawler $round)
+function processRound(\Symfony\Component\DomCrawler\Crawler $round, $roundNumber = 1)
 {
     $categoryNames = $round->filter('td.category_name')->each(function (Crawler $element) {
         return $element->text();
     });
 
-    $clues = $round->filter('td.clue')->each(function (Crawler $clueElement) {
+    $clueNumber = 0;
+
+    $clues = $round->filter('td.clue')->each(function (Crawler $clueElement) use (&$clueNumber, $roundNumber) {
+        $clueNumber++;
 
         $clue = null;
         $answer = null;
@@ -56,7 +59,11 @@ function processRound(\Symfony\Component\DomCrawler\Crawler $round)
             $value = cleanValue($clueElement->filter('td.clue_value')->first()->text());
         } catch (InvalidArgumentException $exception) {
             // Should be thrown if we hit a daily double.
-            $value = cleanValue($clueElement->filter('td.clue_value_daily_double')->first()->text());
+
+            // We need to determine the proper value for this clue, not what the wager was.
+            $valueModifier = ceil($clueNumber / 6);
+            $baseClueValue = $roundNumber * 200;
+            $value = $valueModifier * $baseClueValue;
             $daily_double = true;
         }
 
