@@ -24,14 +24,14 @@ foreach ($rounds as $round) {
 
     foreach ($config['players'] as $player) {
         $game['contestants'][] = [
-            'name' => $player,
+            'name' => ucfirst(strtolower($player)),
             'score' => 0
         ];
     }
 
     $game['categories'] = $round;
 
-    file_put_contents("questions-rd{$roundNumber}.json", json_encode($game));
+    file_put_contents("output/questions-rd{$roundNumber}.json", json_encode($game));
     $roundNumber++;
 }
 
