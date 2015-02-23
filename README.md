@@ -20,7 +20,7 @@ Then just run
 php parser.php
 ```
 
-It will output a file called questions.json into the same folder as the script. This JSON file will contain all the question,
+It will output two files: questions-rd1.json and questions-rd2.json into the output folder. These JSON files will contain all the questions,
 answers and values.
 
 Notes

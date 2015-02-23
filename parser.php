@@ -9,24 +9,33 @@ $client = new \Goutte\Client();
 
 $crawler = $client->request('GET', $config['url']);
 
-$rounds = $crawler->filter('table.round');
+$roundNumber = 1;
 
-$categories = processRound($rounds->first());
+$rounds = $crawler->filter('table.round')->each(function($round) use (&$roundNumber) {
+    $categories = processRound($round);
+    $roundNumber++;
+    return $categories;
+});
 
-unset($categories[5]);
-$game = [];
-$game['contestants'] = [ ];
+$roundNumber = 1;
+foreach ($rounds as $round) {
+    $game = [];
+    $game['contestants'] = [ ];
 
-foreach ($config['players'] as $player) {
-    $game['contestants'][] = [
-        'name' => $player,
-        'score' => 0
-    ];
+    foreach ($config['players'] as $player) {
+        $game['contestants'][] = [
+            'name' => $player,
+            'score' => 0
+        ];
+    }
+
+    $game['categories'] = $round;
+
+    file_put_contents("questions-rd{$roundNumber}.json", json_encode($game));
+    $roundNumber++;
 }
 
-$game['categories'] = $categories;
 
-file_put_contents("questions.json", json_encode($game));
 
 
 function processRound(\Symfony\Component\DomCrawler\Crawler $round, $roundNumber = 1)
@@ -94,9 +103,20 @@ function processRound(\Symfony\Component\DomCrawler\Crawler $round, $roundNumber
         $catIndex++;
     }
 
+    // We only want the first five categories, our Jeopardy tool does not support six. Drop the last one.
+    unset($categories[5]);
+
     return $categories;
 }
 
+/**
+ * Clean the clue values from the DOM.
+ *
+ * They all contain dollar signs, which we don't want, and if the clue was a daily double, the value is preceeded by "DD: "
+ *
+ * @param $value
+ * @return int
+ */
 function cleanValue($value)
 {
     $value = str_replace("$", "", $value);
