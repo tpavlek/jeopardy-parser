@@ -23,6 +23,43 @@ php parser.php
 It will output two files: questions-rd1.json and questions-rd2.json into the output folder. These JSON files will contain all the questions,
 answers and values.
 
+### Parsing from Files
+
+If you have written your own Jeopardy game in a Google Doc or text document, this software can parse it into JSON for you
+automatically. Your file should be in the format
+```
+Category: Some category
+
+Clue
+Answer
+
+Clue
+Answer
+...
+
+Category: Other Category
+
+Clue
+Answer
+
+...
+
+Final Category: Final Jeopardy Category Content
+Final Clue: Some Clue
+Final Answer: Some Answer
+```
+
+The software will then parse this into a game object and automatically assign the proper scores.
+
+You can make any question a Daily Double by prepending "DD: " to the answer text for example.
+
+```
+This is a game hosted by Alex Trebek
+DD: Jeopardy
+```
+
+Set the filename in `config/config.php` then run `php new_parser.php`.
+
 Notes
 -------
 
