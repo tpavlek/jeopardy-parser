@@ -89,10 +89,12 @@ class FileParser implements Parser
             }
 
             if (Strings\starts_with($line, "Final Clue: ")) {
+                $finalClue = substr($line, strlen("Final Clue: "));
                 continue;
             }
 
             if (Strings\starts_with($line, "Final Answer: ")) {
+                $finalAnswer = substr($line, strlen("Final Answer: "));
                 continue;
             }
 
