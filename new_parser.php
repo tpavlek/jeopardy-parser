@@ -3,7 +3,13 @@
 require 'vendor/autoload.php';
 require 'config/config.php';
 
-$parser = new \Depotwarehouse\Jeopardy\Parser\FileParser(file_get_contents($config['file']));
+$parser = null;
+if ($config['url'] != "") {
+    $parser = new \Depotwarehouse\Jeopardy\Parser\WebParser($config['url']);
+} else {
+    $parser = new \Depotwarehouse\Jeopardy\Parser\FileParser(file_get_contents($config['file']));
+}
+
 $game = $parser->parse();
 
 
