@@ -4,6 +4,7 @@ namespace Depotwarehouse\Jeopardy\Parser;
 
 use Depotwarehouse\Jeopardy\Parser\Values\Category;
 use Depotwarehouse\Jeopardy\Parser\Values\Clue;
+use Depotwarehouse\Jeopardy\Parser\Values\FinalClue;
 use Depotwarehouse\Jeopardy\Parser\Values\Game;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -36,13 +37,17 @@ class WebParser implements Parser
             return $categories;
         });
 
+        $games = [];
+
         $roundNumber = 1;
         foreach ($rounds as $round) {
-            $game = [];
+            $game = new Game($round, new FinalClue("Something", "Something", "Something")); // TODO parse final clue
 
-            file_put_contents("output/questions-rd{$roundNumber}.json", json_encode($game));
+            $games[] = $game;
             $roundNumber++;
         }
+
+        return $games;
     }
 
     public function parseNormal()

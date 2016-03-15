@@ -33,9 +33,6 @@ class Category implements Arrayable
         return $this->clues;
     }
 
-
-
-
     /**
      * Get the instance as an array.
      *
