@@ -58,7 +58,9 @@ class Game implements Arrayable, Jsonable
     {
         $categories = $this->categories->map(function (Category $category) {
             return $category->toArray();
-        })->toArray();
+        })
+            ->values()
+            ->toArray();
 
         return [
             "categories" => $categories,
