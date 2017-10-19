@@ -1,8 +1,8 @@
 <?php
 
 $config = [
-    'url' => "",
-    'file' => "/home/ebon/questions-raw.txt",
+    'url' => "http://www.j-archive.com/showgame.php?game_id=5757",
+    'file' => "",
     'players' => [
         "Player1",
         "Player2",

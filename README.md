@@ -1,8 +1,8 @@
-Depotwarehouse.net's Jeopardy Parser
+Troy Pavlek's Jeopardy Parser
 =====================================
 
 This php script parses [J! Archive](http://j-archive.com/) and converts the clues and answers into a JSON format for use with
-the [Depotwarehouse.net Jeopardy Player](http://github.com/tpavlek/Jeopardy).
+[Troy's Jeopardy Player](http://github.com/tpavlek/Jeopardy).
 
 Installation
 ----------------
