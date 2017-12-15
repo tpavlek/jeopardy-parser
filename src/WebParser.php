@@ -37,11 +37,22 @@ class WebParser implements Parser
             return $categories;
         });
 
+        $final_category = $crawler->filter('#final_jeopardy_round td.category_name')->first()->text();
+        $final_clue = $crawler->filter('td#clue_FJ')->first()->text();
+
+        $final_text = $crawler->filter('.final_round div')->first()->attr('onmouseover');
+
+        // 19 is number of characters in correct_response\">
+        $start = strpos($final_text, 'correct_response') + 19;
+
+        $final_answer = substr($final_text, $start);
+
+        $final_answer = substr($final_answer, 0, strpos($final_answer, '</'));
         $games = [];
 
         $roundNumber = 1;
         foreach ($rounds as $round) {
-            $game = new Game($round, new FinalClue("Something", "Something", "Something")); // TODO parse final clue
+            $game = new Game($round, new FinalClue($final_category, $final_clue, $final_answer)); // TODO parse final clue
 
             $games[] = $game;
             $roundNumber++;

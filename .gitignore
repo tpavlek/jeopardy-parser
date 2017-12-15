@@ -1,3 +1,4 @@
 .idea/
 vendor/
 output/questions-rd*.json
+.DS_Store
