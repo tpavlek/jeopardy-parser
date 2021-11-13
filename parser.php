@@ -1,4 +1,5 @@
 <?php
+error_reporting( E_ALL & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 
 require 'vendor/autoload.php';
 require 'config/config.php';
