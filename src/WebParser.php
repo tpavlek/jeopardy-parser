@@ -31,7 +31,7 @@ class WebParser implements Parser
         $categories = new Collection();
 
         $rounds = $crawler->filter('table.round')->each(function($round) use (&$roundNumber) {
-            $categories = $this->processRound($round);
+            $categories = $this->processRound($round, $roundNumber);
             $roundNumber++;
 
             return $categories;
