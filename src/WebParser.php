@@ -47,7 +47,7 @@ class WebParser implements Parser
 
         $final_answer = substr($final_text, $start);
 
-        $final_answer = substr($final_answer, 0, strpos($final_answer, '</'));
+        $final_answer = substr($final_answer, 0, strpos($final_answer, '</em>'));
         $games = [];
 
         $roundNumber = 1;
