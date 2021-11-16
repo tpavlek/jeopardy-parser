@@ -31,6 +31,9 @@ if ($game !== null) {
 
         file_put_contents('output/questions-rd1-'.$game_id.'.json', json_encode(mergePlayersWithGame($game[0]->toArray(), $config)));
         file_put_contents('output/questions-rd2-'.$game_id.'.json', json_encode(mergePlayersWithGame($game[1]->toArray(), $config)));
+
+		// combined game data
+		file_put_contents('output/'.$game_id.'.json', json_encode( [ mergeGame($game[0]->toArray()), mergeGame($game[1]->toArray()) ] ) );
     } else {
         file_put_contents('output/questions-rd1-'.$game_id.'.json', json_encode(mergePlayersWithGame($game->onlyRound(1)->toArray(), $config)));
         file_put_contents('output/questions-rd2-'.$game_id.'.json', json_encode(mergePlayersWithGame($game->onlyRound(2)->toArray(), $config)));
@@ -38,9 +41,16 @@ if ($game !== null) {
 
 }
 
+function mergeGame(array $gameData)
+{
+	$game = [];
 
+	foreach ($gameData as $key => $value) {
+		$game[$key] = $value;
+	}
 
-
+	return $game;
+}
 
 function mergePlayersWithGame(array $gameData, $config)
 {
