@@ -140,9 +140,6 @@ class WebParser implements Parser
             $catIndex++;
         }
 
-        // We only want the first five categories, our Jeopardy tool does not support six. Drop the last one.
-        $categories->forget(5);
-
         return $categories;
     }
 
