@@ -31,7 +31,7 @@ class WebParser implements Parser
         $categories = new Collection();
 
         $rounds = $crawler->filter('table.round')->each(function($round) use (&$roundNumber) {
-            $categories = $this->processRound($round);
+            $categories = $this->processRound($round, $roundNumber);
             $roundNumber++;
 
             return $categories;
@@ -47,7 +47,7 @@ class WebParser implements Parser
 
         $final_answer = substr($final_text, $start);
 
-        $final_answer = substr($final_answer, 0, strpos($final_answer, '</'));
+        $final_answer = substr($final_answer, 0, strpos($final_answer, '</em>'));
         $games = [];
 
         $roundNumber = 1;
@@ -139,9 +139,6 @@ class WebParser implements Parser
             );
             $catIndex++;
         }
-
-        // We only want the first five categories, our Jeopardy tool does not support six. Drop the last one.
-        $categories->forget(5);
 
         return $categories;
     }
